@@ -6,7 +6,7 @@ This README would normally document whatever steps are necessary to get your app
 
 * Play a game of cribbage with two users.
 * Version 1.0
-* [Cribbage](https://wikipedia.org/Cribbage)
+* [Cribbage](https://wikipedia.org/wiki/Cribbage)
 
 ### Who do I talk to? ###
 
