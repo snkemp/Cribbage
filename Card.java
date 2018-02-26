@@ -26,6 +26,10 @@ public class Card {
     public int getFace() { return this.face; }
     public int getSuit() { return this.suit; }
 
+    /* Determine */
+    public boolean equals(Card c) {
+        return face == c.getFace() && suit == c.getSuit();
+    }
 
     /* Format */
     public String toString() {
@@ -54,5 +58,41 @@ public class Card {
     public static String suitString(int suit) {
         String[] suits = new String[] { "Spades", "Hearts", "Diamond", "Clubs" };
         return suits[suit];
+    }
+
+    @Override
+    public Card clone() {
+        return new Card( face, suit );
+    }
+
+    public static Card fromCommandLine(String card) {
+        int f = Integer.parseInt(""+card.charAt(0));
+        int s = -1;
+        switch( card.charAt(1) ) {
+            case 'S':
+            case 's':
+                s = 0;
+                break;
+
+            case 'H':
+            case 'h':
+                s = 1;
+                break;
+
+            case 'D':
+            case 'd':
+                s = 2;
+                break;
+
+            case 'C':
+            case 'c':
+                s = 3;
+                break;
+
+            default:
+                return null;
+        }
+
+        return new Card(f, s);
     }
 }

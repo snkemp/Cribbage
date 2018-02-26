@@ -16,7 +16,7 @@ public class Deck {
     /* Constructors */
     public Deck() { this.reset(); }
     public void reset() {
-        cards = new Vector<Card>(52);
+        cards.clear();
         for( int suit = 0; suit < 4; suit++ )
             for( int face = 0; face < 13; face++ )
                 cards.add( new Card(face, suit) );
@@ -47,4 +47,7 @@ public class Deck {
     }
 
     /* Deal */
+    public Card pop() {
+        return cards.remove(0);
+    }
 }
