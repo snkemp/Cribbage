@@ -31,6 +31,22 @@ public class Card {
         return face == c.getFace() && suit == c.getSuit();
     }
 
+    /* Helpers */
+    public int priority() {
+        return 4*face + suit;
+    }
+
+    public void swap( Card c ) {
+        Card d = clone();
+        set(c);
+        c.set(d);
+    }
+
+    public void set( Card c ) {
+        face = c.getFace();
+        suit = c.getSuit();
+    }
+
     /* Format */
     public String toString() {
         return Card.faceChar(this.face) +""+ Card.suitChar(this.suit);
@@ -66,33 +82,44 @@ public class Card {
     }
 
     public static Card fromCommandLine(String card) {
-        int f = Integer.parseInt(""+card.charAt(0));
-        int s = -1;
-        switch( card.charAt(1) ) {
-            case 'S':
-            case 's':
-                s = 0;
+        String sFace = card.substring(0, card.length()-1);
+        char sSuit = card.charAt(card.length() -1);
+
+        if( sFace.equals("a") || sFace.equals("A") )
+            sFace = "1";
+        else
+        if( sFace.equals("x") || sFace.equals("X") )
+            sFace = "10";
+        if( sFace.equals("j") || sFace.equals("J") )
+            sFace = "11";
+        else
+        if( sFace.equals("q") || sFace.equals("q") )
+            sFace = "12";
+        else
+        if( sFace.equals("k") || sFace.equals("K") )
+            sFace = "13";
+        
+        int face = Integer.parseInt(sFace) - 1;
+        int suit = -1;
+        switch( sSuit ) {
+            case 's': case 'S':
+                suit = 0;
                 break;
 
-            case 'H':
-            case 'h':
-                s = 1;
+            case 'h': case 'H':
+                suit = 1;
                 break;
 
-            case 'D':
-            case 'd':
-                s = 2;
+            case 'd': case 'D':
+                suit = 2;
                 break;
 
-            case 'C':
-            case 'c':
-                s = 3;
+            case 'c': case 'C':
+                suit = 3;
                 break;
 
-            default:
-                return null;
+            default: return null;
         }
-
-        return new Card(f, s);
+        return new Card(face, suit);
     }
 }

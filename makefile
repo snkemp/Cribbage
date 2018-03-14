@@ -12,4 +12,5 @@ client:
 test:
 	javac -d . *.java
 	java socket/CribbageHost &
+	sleep 3
 	java socket/CribbageClient

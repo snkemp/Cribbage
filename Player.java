@@ -6,22 +6,25 @@
 package cribbage;
 
 import java.io.*;
+import java.util.Scanner;
 
 public class Player {
 
-    private InputStream in;
-    private OutputStream out;
+    private BufferedReader in;
+    private PrintWriter out;
 
     private int score, wins;
 
     private Hand hand, peg;
 
-    public Player( InputStream in, OutputStream out ) {
+    public Player( BufferedReader in, PrintWriter out ) {
         this.in = in;
         this.out = out;
 
         this.score = 0;
         this.wins = 0;
+
+        hand = new Hand();
     }
 
     /* Hand IO */
@@ -34,8 +37,14 @@ public class Player {
     public void deal( Card c ) { hand.add(c); }
 
     public Card getForCrib() {
-        write("Select a card for the crib: " + hand.toString() );
-        String submission = read();
+        write("> Select a card for the crib: " + hand.toString() );
+        String submission = "";
+        
+        try {
+            submission = read();
+        } catch( Exception err ) {
+            err.printStackTrace(out);
+        }
 
         Card card = Card.fromCommandLine(submission);
         Card crib = hand.remove(card);
@@ -64,19 +73,11 @@ public class Player {
 
     /* IO */
     public void write( String message ) {
-        PrintWriter o = new PrintWriter(out);
-        o.println(message);
-        o.flush();
+        out.println(message);
     }
 
-    public String read() {
-        try {
-            BufferedReader i = new BufferedReader( new InputStreamReader(in) );
-            return i.readLine();
-        } catch(Exception e) {
-            e.printStackTrace();
-            return "";
-        }
+    public String read() throws Exception {
+        return in.readLine();
     }
 
     public void printHand() {

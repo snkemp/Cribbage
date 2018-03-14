@@ -14,7 +14,10 @@ public class Deck {
 
 
     /* Constructors */
-    public Deck() { this.reset(); }
+    public Deck() { 
+        cards = new Vector<Card>(52);
+        this.reset();
+    }
     public void reset() {
         cards.clear();
         for( int suit = 0; suit < 4; suit++ )
