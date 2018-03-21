@@ -7,6 +7,8 @@ package cribbage;
 
 public class Card {
 
+    public static final int CLUBS = 0, DIAMONDS = 1, HEARTS = 2, SPADES = 3;
+
     /* Each card has a face value and suit */
     private int face, suit;
 
@@ -25,6 +27,8 @@ public class Card {
     /* Getters */
     public int getFace() { return this.face; }
     public int getSuit() { return this.suit; }
+
+    public int getFaceValue() { return Math.min(getFace() + 1, 10); }
 
     /* Determine */
     public boolean equals(Card c) {
@@ -82,6 +86,11 @@ public class Card {
     }
 
     public static Card fromCommandLine(String card) {
+        card.trim();
+
+        if( card.length() != 2 && card.length() != 3 )
+            return null;
+
         String sFace = card.substring(0, card.length()-1);
         char sSuit = card.charAt(card.length() -1);
 
@@ -103,19 +112,19 @@ public class Card {
         int suit = -1;
         switch( sSuit ) {
             case 's': case 'S':
-                suit = 0;
+                suit = SPADES;
                 break;
 
             case 'h': case 'H':
-                suit = 1;
+                suit = HEARTS;
                 break;
 
             case 'd': case 'D':
-                suit = 2;
+                suit = DIAMONDS;
                 break;
 
             case 'c': case 'C':
-                suit = 3;
+                suit = CLUBS;
                 break;
 
             default: return null;

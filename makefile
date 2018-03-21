@@ -1,16 +1,17 @@
 default:
+	@make -s init
+
+init:
 	javac -d . *.java
 
 host:
-	@make default
-	java socket/CribbageHost
+	@make init
+	@java socket/Host
 
 client:
-	@make default
-	java socket/CribbageClient
+	@make init
+	@java socket/Client
 
-test:
-	javac -d . *.java
-	java socket/CribbageHost &
-	sleep 3
-	java socket/CribbageClient
+tests:
+	@make -si init
+	@java test/Test

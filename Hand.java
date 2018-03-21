@@ -21,6 +21,9 @@ public class Hand {
     }
 
     public Card remove(Card c) {
+        if( c == null )
+            return null;
+
         for( int i = 0; i < cards.size(); i++ )
             if( c.equals(cards.get(i)) )
                 return cards.remove(i);
@@ -28,12 +31,26 @@ public class Hand {
         return null;
     }
 
+    public void clear() { cards.clear(); }
+    public int size() { return cards.size(); }
+    public Card get(int i ) { return cards.get(i); }
+
     public void sort() {
         for( int i = 1; i < cards.size(); i++ ) {
             int k = i;
             while( k > 0 && cards.elementAt(k).priority() < cards.elementAt(k-1).priority() )
                 cards.get(k).swap(cards.get(--k));
         }
+    }
+
+    public static Hand fromCommandLine( String hand ) {
+        Hand h = new Hand();
+
+        String[] cards = hand.split(",");
+        for( String card : cards )
+            h.add( Card.fromCommandLine(card) );
+
+        return h;
     }
 
     @Override

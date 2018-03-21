@@ -1,5 +1,5 @@
 /**
- * CribbageClient.java
+ * Client.java
  * snkemp
 **/
 
@@ -8,15 +8,14 @@ package socket;
 import java.net.*;
 import java.io.*;
 
-public class CribbageClient {
+public class Client {
 
     public static void main( String[] args ) {
         try {
 
             /* Connect to host. Host will handle everything */
             System.out.println("Connecting to host ...");
-            Socket host = new Socket("127.0.0.1", CribbageHost.PORT );
-            System.out.println("Connected to host.");
+            Socket host = new Socket("127.0.0.1", Host.PORT );
 
             /* We need to read */
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in));

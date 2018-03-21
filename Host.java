@@ -1,5 +1,5 @@
 /**
- * CribbageHost.java
+ * Host.java
  * snkemp
 **/
 
@@ -10,7 +10,7 @@ import java.io.*;
 
 import cribbage.*;
 
-public class CribbageHost {
+public class Host {
 
     public static int PORT = 6969;
     
@@ -31,11 +31,13 @@ public class CribbageHost {
             System.out.println("Client has connected.");
 
             /* Get our players */
-            Player p1 = new Player( 
+            Player p1 = new Player(
+                    "Host",
                     new BufferedReader( new InputStreamReader(System.in) ), 
                     new PrintWriter(System.out, true) );
 
             Player p2 = new Player( 
+                    "Client", 
                     new BufferedReader( new InputStreamReader(client.getInputStream()) ), 
                     new PrintWriter(client.getOutputStream(), true) );
 

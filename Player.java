@@ -8,7 +8,11 @@ package cribbage;
 import java.io.*;
 import java.util.Scanner;
 
+import java.util.Stack;
+
 public class Player {
+
+    private String name;
 
     private BufferedReader in;
     private PrintWriter out;
@@ -17,7 +21,10 @@ public class Player {
 
     private Hand hand, peg;
 
-    public Player( BufferedReader in, PrintWriter out ) {
+    public Player( String name, BufferedReader in, PrintWriter out ) {
+
+        this.name = name;
+
         this.in = in;
         this.out = out;
 
@@ -27,6 +34,11 @@ public class Player {
         hand = new Hand();
     }
 
+    /* UI */
+    public String getName() { return this.name; }
+    public String getScoring() { return getName() + ":\t " + score; }
+    public String getGaming() { return getName() + ":\t" + wins; }
+
     /* Hand IO */
     public Hand getHand() { return this.hand; }
     public void setHand(Hand h ) { this.hand = h; }
@@ -35,9 +47,10 @@ public class Player {
     public void endPegging() { this.peg = null; }
 
     public void deal( Card c ) { hand.add(c); }
+    public void empty() { this.hand.clear(); }
 
-    public Card getForCrib() {
-        write("> Select a card for the crib: " + hand.toString() );
+    public Card getForCrib(String dealer) {
+        write("> Select a card for the " + dealer + "'s crib: " + hand.toString() );
         String submission = "";
         
         try {
@@ -51,15 +64,50 @@ public class Player {
         
         if( crib == null ) {
             write("Illegal card");
-            return getForCrib();
+            return getForCrib(dealer);
         }
 
         return crib;
     }
 
-    public Card getForPegging() {
+    public Card getForPegging( Stack<Card> pile ) {
+        int pegging = 0;
+        String msg = "Pegging: ";
 
-        return null;
+        // Print the pile
+        for( int i = 0; i < pile.size(); i++ ) {
+            msg += pile.get(i) + "  ";
+            pegging += pile.get(i).getFaceValue();
+        }
+        write( msg + ": " + pegging );
+
+        // Peg
+        write("> Select a card for pegging: " + peg );
+        String submission = "";
+
+        try {
+            submission = read();
+        } catch( Exception err ) {
+            err.printStackTrace(out);
+        }
+
+        if( submission.equals("") || submission.equals("g") || submission.equals("go") )
+            return null;
+
+        Card card = Card.fromCommandLine(submission);
+        Card pegg = peg.remove(card);
+        if( pegg == null ) {
+            write("Illegal card");
+            return getForPegging(pile);
+        }
+
+        if( pegg.getFaceValue() + pegging > 31 ) {
+            peg.add(pegg);
+            write("Illegal card");
+            return getForPegging(pile);
+        }
+
+        return pegg;
     }
 
     /* Points */
